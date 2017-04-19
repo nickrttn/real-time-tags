@@ -1,0 +1,30 @@
+{
+  "name": "real-time-tags",
+  "version": "1.0.0",
+  "description": "Near real-time data visualisation of a users' Instagram tags and how they connect throughout the platform. Edit",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.15.2",
+    "nodemon": "^1.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "xo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickrttn/real-time-tags.git"
+  },
+  "keywords": [
+    "javascript",
+    "nodejs",
+    "websockets",
+    "oauth"
+  ],
+  "author": "Nick Rutten <hello@nickrttn.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nickrttn/real-time-tags/issues"
+  },
+  "homepage": "https://github.com/nickrttn/real-time-tags#readme"
+}
