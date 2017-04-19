@@ -24,7 +24,6 @@ app.use('/assets', express.static(path.join(__dirname, '/build')));
 app.use('/oauth', authentication);
 
 app.get('/', (req, res) => {
-	console.log(req.session);
 	if (!req.session.userId) {
 		const oauthURL = `${process.env.IG_OAUTH}/authorize/?client_id=${process.env.IG_CLIENT}&redirect_uri=http://localhost:3000/oauth&response_type=code`;
 		res.render('pages/index', {oauthURL});
