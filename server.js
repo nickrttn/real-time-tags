@@ -1,8 +1,10 @@
 const path = require('path');
-const https = require('https');
-const request = require('request');
 const debug = require('debug')('express');
 const express = require('express');
+const session = require('express-session');
+
+const authentication = require('./routers/authentication');
+const user = require('./db/user');
 
 require('dotenv').config();
 
@@ -12,32 +14,28 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('port', process.env.PORT);
 
-// Static file serving
+app.use(session({
+	secret: process.env.SESSION_SECRET,
+	cookie: {maxAge: 60000},
+	resave: false,
+	saveUninitialized: false
+}));
 app.use('/assets', express.static(path.join(__dirname, '/build')));
+app.use('/oauth', authentication);
 
 app.get('/', (req, res) => {
-	const oauthURL = `${process.env.IG_OAUTH}/authorize/?client_id=${process.env.IG_CLIENT}&redirect_uri=http://localhost:3000/oauth&response_type=code`;
-	res.render('pages/index', {oauthURL});
+	console.log(req.session);
+	if (!req.session.userId) {
+		const oauthURL = `${process.env.IG_OAUTH}/authorize/?client_id=${process.env.IG_CLIENT}&redirect_uri=http://localhost:3000/oauth&response_type=code`;
+		res.render('pages/index', {oauthURL});
+	} else {
+		user.get(req.session.userId, doc => {
+			res.render('pages/loggedin.ejs', {data: doc});
+		});
+	}
 });
 
-app.get('/oauth', (req, res) => {
-	request.post({
-		url: `${process.env.IG_OAUTH}/access_token`,
-		json: true,
-		form: {
-			client_id: process.env.IG_CLIENT, // eslint-disable-line camelcase
-			client_secret: process.env.IG_SECRET, // eslint-disable-line camelcase
-			grant_type: 'authorization_code', // eslint-disable-line camelcase
-			redirect_uri: 'http://localhost:3000/oauth', // eslint-disable-line camelcase
-			code: req.query.code
-		}
-	}, (err, res, body) => {
-		if (err) debug(err);
-		debug(res, body);
-	});
-});
-
-app.listen(app.get('port'), (err) => {
+app.listen(app.get('port'), err => {
 	if (err) debug(err); // eslint-disable-line curly
 	debug(`listening on http://localhost:${app.get('port')}`);
 });

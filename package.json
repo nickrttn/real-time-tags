@@ -8,6 +8,9 @@
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
+    "express-session": "^1.15.2",
+    "pouchdb": "^6.1.2",
+    "pouchdb-upsert": "^2.2.0",
     "request": "^2.81.0"
   },
   "devDependencies": {
