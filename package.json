@@ -13,6 +13,9 @@
     "nodemon": "^1.11.0"
   },
   "scripts": {
+  	"start": "node server.js",
+  	"start:inspect": "DEBUG=express node server.js --inspect",
+  	"start:dev": "DEBUG=express nodemon server.js",
     "test": "xo"
   },
   "repository": {
