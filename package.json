@@ -4,10 +4,12 @@
   "description": "Near real-time data visualisation of a users' Instagram tags and how they connect throughout the platform. Edit",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.15.2",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
     "nodemon": "^1.11.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "xo"
   },
