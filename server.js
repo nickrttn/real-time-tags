@@ -5,6 +5,8 @@ const session = require('express-session');
 
 const authentication = require('./routers/authentication');
 const user = require('./db/user');
+const request = require('./lib/request');
+const parse = require('./lib/parse');
 
 require('dotenv').config();
 
@@ -24,13 +26,22 @@ app.use('/assets', express.static(path.join(__dirname, '/build')));
 app.use('/oauth', authentication);
 
 app.get('/', (req, res) => {
-	if (!req.session.userId) {
-		const oauthURL = `${process.env.IG_OAUTH}/authorize/?client_id=${process.env.IG_CLIENT}&redirect_uri=http://localhost:3000/oauth&response_type=code`;
-		res.render('pages/index', {oauthURL});
-	} else {
-		user.get(req.session.userId, doc => {
-			res.render('pages/loggedin.ejs', {data: doc});
+	// If we have a session id
+	if (req.session.userId) {
+		// Get the user from the database
+		user.get(req.session.userId, user => {
+			// Request their most recent media
+			request.mostRecent(user.accessToken)
+				.then(json => parse.tags(json.data))
+				.then(tags => request.tags(tags)
+					.then(res => res.map(single => single.json()))
+					.then(data => res.render('pages/loggedin', {data, user}))
+					.catch(err => res.render('pages/error', {err}))
+				).catch(err => res.render('pages/error', {err}));
 		});
+	} else {
+		const oauthURL = `${process.env.IG_OAUTH}/authorize/?client_id=${process.env.IG_CLIENT}&redirect_uri=http://localhost:3000/oauth&response_type=code&scope=basic+public_content`;
+		res.render('pages/index', {oauthURL});
 	}
 });
 
