@@ -30,6 +30,11 @@ Near real-time data visualisation of a users' Instagram tags and how they connec
 - Design the shit out of it
 - Clean up the request for logged in users.
 - Find a way to update the tags data without doing a shitload of requests.
+- Figure out the optimal polling rate for my app type (production or sandbox), and limit requests to that.
+- Seed the database with tags data once for each user, and from then on, do not exceed the rate limit. Update accordingly.
+- Use a CouchDB server instead of a local PouchDB data store.
+- GraphQL (?)
+- Isomorphic rendering
 
 ## Uses
 
