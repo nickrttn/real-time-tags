@@ -1,5 +1,11 @@
 <%- include('../application/head') %>
 
-<a href="<%= oauthURL %>">Log in with Instagram</a>
+<% if (!user) { %>
+	<h1>Log in or register</h1>
+	<%- include('../application/login-form') %>
+<% } else { %>
+	<a href="<%= oauthURL %>">Log in with Instagram</a>
+	<a href="/auth/local/logout">Log out</a>
+<% } %>
 
 <%- include('../application/foot') %>

@@ -2,12 +2,25 @@ const db = require('./create');
 
 const user = {};
 
-user.get = (userId, callback) => {
-	db.get(userId, (err, doc) => {
-		if (err) throw err; // eslint-disable-line curly
-		callback(doc);
+// Creates and returns a user, or simply returns it
+user.login = (username, password, callback) => {
+	db.get(username, (err, doc) => {
+		if (err) {
+			if (err.status === 404) {
+				return db.put({_id: username, username, password}, (err, res) => {
+					if (err) callback(err, null); // eslint-disable-line curly
+					db.get(res.id, callback); // eslint-disable-line curly
+				});
+			}
+
+			return callback(err, null);
+		}
+
+		callback(err, doc);
 	});
 };
+
+user.get = (id, callback) => db.get(id, callback);
 
 user.save = json => {
 	db.upsert(json.user.id, doc => {
