@@ -9,6 +9,8 @@
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "pouchdb": "^6.1.2",
     "pouchdb-upsert": "^2.2.0",
     "superagent": "^3.5.2"

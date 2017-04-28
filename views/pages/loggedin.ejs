@@ -1,6 +1,11 @@
 <%- include('../application/head') %>
 
 <h1><%= user.fullName %> #tags</h1>
-<%= data %>
+<p><strong>Requests left:</strong> <%= reqLeft %></p>
+<ul>
+	<% data.forEach(function(tag) { %>
+		<li><%= tag %></li>
+	<% }); %>
+</ul>
 
 <%- include('../application/foot') %>

@@ -19,7 +19,7 @@ router.get('/', (req, res) => { // eslint-disable-line no-unused-vars
 		if (err) debug(err); // eslint-disable-line curly
 		if (oauthRes.status === 200) {
 			user.save(oauthRes.body);
-			req.session.userId = res.body.user.id;
+			req.session.userId = oauthRes.body.user.id;
 			res.redirect('/');
 		}
 	}
